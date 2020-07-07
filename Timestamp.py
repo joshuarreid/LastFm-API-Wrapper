@@ -1,6 +1,7 @@
 from datetime import datetime
 from time import mktime
 
+### Dictionary that keeps record of how many days in each month ###
 daysInMonth = {
     1: 31,
     2: 28,
@@ -17,11 +18,13 @@ daysInMonth = {
 
 }
 
+### Dictionary that holds time variables for use in functions from LastFm.py ###
 timeStamps = {
     "time_from": 0,
     "time_to": 0,
 }
 
+### Fetching current time and storing them in variables ###
 currentMinute = datetime.now().minute
 currentHour = datetime.now().hour
 currentDay = datetime.now().day
@@ -30,6 +33,7 @@ currentYear = datetime.now().year
 previousMonth = 0
 
 
+### Function finds what the date was for previous day and checks if its the beginning of a month ###
 def previousDay(day, month):
     if (day - 1) == 0:
         month -= 1
@@ -40,11 +44,14 @@ def previousDay(day, month):
         return previousDay
 
 
+### fetches timestamp in EST for a given date ###
 def fetchTimestamp(year, month, day, hour,minute):
     dt = datetime(year, month, day, hour-4, minute)
     est = mktime(dt.timetuple())
     return est
 
+
+### Grabs timestamps from 24 hours ago to current time ###
 ### FIX TO CHECK IF THE MONTH CHANGED ###
 def twentyFourHours():
     yesterday = previousDay(currentDay, currentMonth)
