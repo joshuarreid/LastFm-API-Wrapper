@@ -37,11 +37,14 @@ previousMonth = 0
 def previousDay(day, month):
     if (day - 1) == 0:
         month -= 1
-        previousDay = daysInMonth[month]
-        return previousDay
+        previousDayValue = daysInMonth[month]
+        return previousDayValue
     else:
-        previousDay = (day-1)
-        return previousDay
+        previousDayValue = (day - 1)
+        return previousDayValue
+
+
+### Create previousMonth Function ###
 
 
 ### fetches timestamp in EST for a given date ###
@@ -55,8 +58,12 @@ def fetchTimestamp(year, month, day, hour,minute):
 ### FIX TO CHECK IF THE MONTH CHANGED ###
 def twentyFourHours():
     yesterday = previousDay(currentDay, currentMonth)
-    timeStamps["time_from"] = int(fetchTimestamp(currentYear, currentMonth, yesterday, currentHour, currentMinute))
-    timeStamps["time_to"] = int(fetchTimestamp(currentYear, currentMonth, currentMinute, currentHour, currentMinute))
+    timeStamps["time_from"] = fetchTimestamp(currentYear, currentMonth, yesterday, currentHour, currentMinute)
+    timeStamps["time_to"] = fetchTimestamp(currentYear, currentMonth, currentDay, currentHour, currentMinute)
+    return timeStamps
+
+
+
 
 
 

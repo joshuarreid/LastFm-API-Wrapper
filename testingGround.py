@@ -63,20 +63,32 @@ def previousDay(day, month):
 
     if (day - 1) == 0:
         month -= 1
-        previousDay = daysInMonth[month]
-        return previousDay
+        previousDayValue = daysInMonth[month]
+        return previousDayValue
 
     else:
-        previousDay = (day-1)
-        return previousDay
+        previousDayValue = (day - 1)
+        return previousDayValue
 
-print "previousDay() Outputted: " + str(previousDay(1,currentMonth))
+print "previousDay() Outputted: " + str(previousDay(1, currentMonth))
 
 
+# Testing get timestamps for last 24 Hours ###
+from Timestamp import timeStamps
+from Timestamp import fetchTimestamp
 
-    #previousDay = currentDay
-    #time_from = fetchEST(currentYear, currentMonth, currentDay - 1, currentHour, currentMinute)
-    #time_to = fetchEST(currentYear, currentMonth, currentDay, currentHour, currentMinute)
+
+def twentyFourHours():
+    yesterday = previousDay(currentDay, currentMonth)
+    timeStamps["time_from"] = fetchTimestamp(currentYear, currentMonth, yesterday, currentHour, currentMinute)
+    timeStamps["time_to"] = fetchTimestamp(currentYear, currentMonth, currentDay, currentHour, currentMinute)
+    return timeStamps
+
+
+twentyFourHours()
+print " "
+print "twentyFourHours() Outputted: " + "Time_from = " + str(timeStamps["time_from"])
+print "twentyFourHours() Outputted: " + "Time_to = " + str(timeStamps["time_to"])
 
 
 
@@ -112,8 +124,8 @@ for item in getTracksTest:
 
 
 ### Testing Getting Tracks from last 24 Hours ###
-previousDay = int(currentDay) - 1
-fromTime = fetchEST(currentYear, currentMonth, previousDay, currentHour, currentMinute)
+previousDayValue = int(currentDay) - 1
+fromTime = fetchEST(currentYear, currentMonth, previousDayValue, currentHour, currentMinute)
 toTime = fetchEST(currentYear, currentMonth, currentDay, currentHour, currentMinute)
 lastDayTracks = lastfm_network.get_user(lastfm_username).get_recent_tracks(cacheable=True, limit=None, time_from=int(fromTime),time_to=int(toTime))
 print " "
@@ -130,9 +142,9 @@ def lastDayTracks():
     currentDay = datetime.now().day
     currentMonth = datetime.now().month
     currentYear = datetime.now().year
-    previousDay = int(currentDay) - 1
+    previousDayValue = int(currentDay) - 1
 
-    fromTime = fetchEST(currentYear, currentMonth, previousDay, currentHour, currentMinute)
+    fromTime = fetchEST(currentYear, currentMonth, previousDayValue, currentHour, currentMinute)
     toTime = fetchEST(currentYear, currentMonth, currentDay, currentHour, currentMinute)
     lastDayTracks = getTracks(fromTime,toTime)
     return lastDayTracks
@@ -162,7 +174,23 @@ def yearAgoTracks():
 yearAgoTracksFunction = yearAgoTracks()
 print " "
 print "yearAgoTracks() Outputted: "
-for item in yearAgoTracksFunction:
+#for item in yearAgoTracksFunction:
+    #print str(item.playback_date) + "     " + str(item.track.artist) + " - " + str(item.track.title)
+
+
+
+### Testing function grabbing tracks from last 24 hours ###
+def lastDayTracks():
+    lastDayTracksList = getTracks(int(timeStamps["time_from"]),int(timeStamps["time_to"]))
+    return lastDayTracksList
+
+
+lastDayTracksList = lastDayTracks()
+print " "
+print "lastDayTracks() Outputted: "
+for item in lastDayTracksList:
     print str(item.playback_date) + "     " + str(item.track.artist) + " - " + str(item.track.title)
+
+
 
 
