@@ -1,11 +1,14 @@
-import pylast
-from Token import lastfm_network
 import LastFm
 import Timestamp
 
-lastDayTracksList = LastFm.lastDayTracks()
-print "Last 24 Hours: "
-for item in lastDayTracksList:
-        print str(item.playback_date) + "     " + str(item.track.artist) + " - " + str(item.track.title)
+recentlyPlayedList = LastFm.lastDayTracks()
+recentlyPlayedCount = 0
+for item in recentlyPlayedList:
+    recentlyPlayedCount += 1
+
+print "-----  Recently Played  -----"
+print "     Total Playbacks: " + str(recentlyPlayedCount)
+for item in recentlyPlayedList:
+    print str(item.playback_date) + "     " + str(item.track.artist) + " - " + str(item.track.title)
 
 
