@@ -43,34 +43,45 @@ def fetchEST(year, month, day, hour,minute):
 print "The Function fetchEST outputted: " + str(fetchEST(currentYear, currentMonth, currentDay, currentHour,currentMinute))
 
 
-### Testing Function that checks to see if previous day is part of the previous month ###
-daysInMonth = {
-    1: 31,
-    2: 28,
-    3: 31,
-    4: 30,
-    5: 31,
-    6: 30,
-    7: 31,
-    8: 31,
-    9: 30,
-    10: 31,
-    11: 30,
-    12: 31,
 
-}
-def previousDay(day, month):
-
-    if (day - 1) == 0:
-        month -= 1
-        previousDayValue = daysInMonth[month]
-        return previousDayValue
+### Function finds what the date was for previous day and checks if its the beginning of a month ###
+def previousDate(day, month, year):
+    daysInMonth = {
+        1: 31,
+        2: 28,
+        3: 31,
+        4: 30,
+        5: 31,
+        6: 30,
+        7: 31,
+        8: 31,
+        9: 30,
+        10: 31,
+        11: 30,
+        12: 31,
+    }
+    yesterday = {
+        "month": month,
+        "day": day,
+        "year" : year
+    }
+    if (day - 1) == 0: # if that date is the first
+        if month == 1: # if the month is january
+            yesterday["month"] = 12
+            yesterday["year"] -= 1
+            yesterday["day"] = daysInMonth[12]
+            return yesterday
+        else: # if the month is not january
+            yesterday["month"] -= 1
+            yesterday["day"] = daysInMonth[yesterday["month"]]
+            month -= 1
+            return yesterday
 
     else:
-        previousDayValue = (day - 1)
-        return previousDayValue
+        yesterday["day"] -= 1
+        return yesterday
 
-print "previousDay() Outputted: " + str(previousDay(1, currentMonth))
+
 
 
 # Testing get timestamps for last 24 Hours ###
@@ -79,8 +90,8 @@ from Timestamp import fetchTimestamp
 
 
 def twentyFourHours():
-    yesterday = previousDay(currentDay, currentMonth)
-    timeStamps["time_from"] = fetchTimestamp(currentYear, currentMonth, yesterday, currentHour, currentMinute)
+    yesterday = previousDate(currentDay, currentMonth, currentYear)
+    timeStamps["time_from"] = fetchTimestamp(yesterday["year"], yesterday["month"], yesterday["day"], currentHour, currentMinute)
     timeStamps["time_to"] = fetchTimestamp(currentYear, currentMonth, currentDay, currentHour, currentMinute)
     return timeStamps
 
@@ -174,8 +185,8 @@ def yearAgoTracks():
 yearAgoTracksFunction = yearAgoTracks()
 print " "
 print "yearAgoTracks() Outputted: "
-#for item in yearAgoTracksFunction:
-    #print str(item.playback_date) + "     " + str(item.track.artist) + " - " + str(item.track.title)
+for item in yearAgoTracksFunction:
+    print str(item.playback_date) + "     " + str(item.track.artist) + " - " + str(item.track.title)
 
 
 
@@ -190,7 +201,4 @@ print " "
 print "lastDayTracks() Outputted: "
 for item in lastDayTracksList:
     print str(item.playback_date) + "     " + str(item.track.artist) + " - " + str(item.track.title)
-
-
-
 

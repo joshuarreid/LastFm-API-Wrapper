@@ -11,8 +11,12 @@ def getTracks(time_from, time_to):
 
 ### Grabs played tracks from last 24 hours ###
 def lastDayTracks():
+    Timestamp.twentyFourHours()
     lastDayTracksList = getTracks(int(Timestamp.timeStamps["time_from"]),int(Timestamp.timeStamps["time_to"]))
     return lastDayTracksList
+
+
+### Grabs played tracks from a year ago ###
 
 
 
