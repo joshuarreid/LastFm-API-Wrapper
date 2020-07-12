@@ -1,12 +1,6 @@
 from datetime import datetime
 from time import mktime
 
-### impliment this into each time grabbing function ###
-### Dictionary that holds time variables for use in functions from LastFm.py ###
-timeStamps = {
-    "time_from": 0,
-    "time_to": 0,
-}
 
 ### Fetching current time and storing them in variables ###
 currentMinute = datetime.now().minute
@@ -61,19 +55,31 @@ def previousDate(day, month, year):
 
 
 ### fetches timestamp in EST for a given date ###
-### Doesn't work when time is between 0am and 4am ###
+### Doesn't work when time is between 0am and 4am || After removing -4 from hour does it work? ###
 def fetchTimestamp(year, month, day, hour,minute):
-    dt = datetime(year, month, day, hour-4, minute)
+    dt = datetime(year, month, day, hour, minute)
     est = mktime(dt.timetuple())
     return est
 
 
 ### Grabs timestamps from 24 hours ago to current time ###
 def twentyFourHours():
+    timeStamps = {
+        "time_from": 0,
+        "time_to": 0,
+    }
     yesterday = previousDate(currentDay, currentMonth, currentYear)
     timeStamps["time_from"] = fetchTimestamp(yesterday["year"], yesterday["month"], yesterday["day"], currentHour, currentMinute)
     timeStamps["time_to"] = fetchTimestamp(currentYear, currentMonth, currentDay, currentHour, currentMinute)
     return timeStamps
 
 
-
+### Grabs timestamps from one year ago (within same hour) ###
+def threeSixFive():
+    timeStamps = {
+        "time_from": 0,
+        "time_to": 0,
+    }
+    timeStamps["time_from"] =fetchTimestamp(currentYear-1, currentMonth, currentDay, currentHour-1, currentMinute)
+    timeStamps["time_to"] = fetchTimestamp(currentYear-1, currentMonth, currentDay, currentHour, currentMinute)
+    return timeStamps
