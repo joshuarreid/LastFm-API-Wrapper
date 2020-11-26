@@ -5,7 +5,6 @@ This project builds upon the API Wrapper [Pylast](https://github.com/pylast/pyla
 
 ## Functionality
 <br />
-
 ### playbackTimeUtcToEst(utcTime) 
 * utcTime - unix timestamp in UTC time
 converts playback time from UTC time zone to EST time zone
