@@ -1,4 +1,4 @@
-import LastFm
+import Statify
 
 
 
